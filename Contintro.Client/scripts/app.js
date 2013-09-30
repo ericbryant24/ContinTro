@@ -1,0 +1,1 @@
+contintroApp = angular.module('contintroApp', []);

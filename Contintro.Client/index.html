@@ -4,9 +4,17 @@
 	<title>ContinTro</title>
 	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<script type="text/javascript" src="scripts/lib/angular.min.js"></script>
-	<script type="text/javascript" src="scripts/board.js"></script>
+	<script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript" src="scripts/controllers/BoardController.js"></script>
+	<script type="text/javascript" src="scripts/controllers/CardController.js"></script>
 </head>
-<body>
-	<h1>Hello Worlds<h1>
+<body ng-app="contintroApp">
+	<div ng-controller="boardController" ng-init="init(1)">
+		<div ng-repeat="cardId in cards">
+			<div ng-controller="cardController" ng-init="init(cardId)">
+				<p>Id: {{id}} Description: {{description}} Type: {{type}}</p>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
