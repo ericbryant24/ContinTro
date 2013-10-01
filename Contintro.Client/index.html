@@ -10,11 +10,23 @@
 </head>
 <body ng-app="contintroApp">
 	<div ng-controller="boardController" ng-init="init(1)">
-		<div ng-repeat="cardId in cards">
-			<div ng-controller="cardController" ng-init="init(cardId)">
-				<p>Id: {{id}} Description: {{description}} Type: {{type}}</p>
-			</div>
-		</div>
+		<h3>Good</h3>
+		<ul ng-repeat="card in goodCards" ng-controller="cardController" ng-init="init(card)">
+			<li ng-click="edit()" ng-hide="editing">{{description}}</li>
+			<li ng-show="editing">
+				<input type="text" ng-model="editedDescription" />
+				<input type="button" ng-click="saveEdits()" value="Save" />
+				<input type="button" ng-click="cancelEdits()" value="Cancel" />
+			</li>
+		</ul>
+		<h3>Bad</h3>
+		<ul ng-repeat="card in badCards" ng-controller="cardController" ng-init="init(card)">
+			<li>{{description}}</li>
+		</ul>
+		<h3>Confusing</h3>
+		<ul ng-repeat="card in confusingCards" ng-controller="cardController" ng-init="init(card)">
+			<li>{{description}}</li>
+		</ul>
 	</div>
 </body>
 </html>

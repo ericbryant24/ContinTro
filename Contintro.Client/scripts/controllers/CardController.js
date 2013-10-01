@@ -1,17 +1,38 @@
-contintroApp.factory('cardService', function($window){
+contintroApp.service('cardService', ["$window", "dataRepository", function($window, dataRepository){
 	return {
-		getCardInfoById: function(id) {
-			return {
-				description: "This is a test card",
-				type: "good"
-			};
+		editCardDescription: function(cardId, description, callback) {
+			dataRepository.editCardDescription(cardId, description, callback);
 		}
 	};
-});
+}]);
 
 contintroApp.controller("cardController", ["$scope", "cardService", function($scope, cardService){
-	$scope.init = function(id) {
-		$scope.id = id;
-		angular.extend($scope, cardService.getCardInfoById(id));
+	$scope.init = function(card) {
+		angular.extend($scope, card);
+		$scope.editedDescription = $scope.description;
+		$scope.editing = false;
 	}
+
+	$scope.saveEdits = function() {
+		cardService.editCardDescription($scope.id, $scope.editedDescription, function(error){
+			if(!error) {
+				$scope.description = $scope.editedDescription;
+				$scope.editing = false;
+			}
+			else {
+				// todo: handle error
+			}
+		});
+	};
+
+	$scope.cancelEdits = function() {
+		$scope.editing = false;
+	};
+
+	$scope.edit = function() {
+		$scope.editing = true;
+	};
+
+	$scope.changeType = function(newType) {
+	};
 }])

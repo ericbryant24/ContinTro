@@ -1,5 +1,5 @@
-contintroApp.factory("boardRepository", function(){
-	data = {
+contintroApp.factory("dataRepository", function(){
+	var data = {
 		boards: [
 			{
 				id: 1,
@@ -30,50 +30,48 @@ contintroApp.factory("boardRepository", function(){
 	};
 	return {
 		getBoardById: function(id) {
-			return data.boards[0];
+			return data.boards.filter(function(board){
+				return board.id === id;
+			})[0];
 		},
-		saveCard: function(cardId, boardId) {
+		editCardDescription: function(cardId, description, callback) {
+			callback();
 		}
 	}
 });
 
-contintroApp.service("boardService", ["$window", "boardRepository", function($window, boardRepository){
+contintroApp.service("boardService", ["$window", "dataRepository", function($window, dataRepository){
 	return {
-		getAllCardIds: function(boardId) {
-			return boardRepository.getBoardById(boardId).cards
-				.map(function(card) {
-					return card.id;
-				});
+		getAllCards: function(boardId) {
+			var board = dataRepository.getBoardById(boardId);
+			return !board ? [] : board.cards;
 		},
 
-		getGoodCardIds: function(boardId) {
-			return boardRepository.getBoardById(boardId).cards
-				.filter(function(card){
-					return card.type === "good";
-				})
-				.map(function(card) {
-					return card.id;
-				});
+		getGoodCards: function(boardId) {
+			var board = dataRepository.getBoardById(boardId);
+			return !board ? [] :
+				board.cards
+					.filter(function(card){
+						return card.type === "good";
+					});
 		},
 
-		getBadCardIds: function(boardId) {
-			return boardRepository.getBoardById(boardId).cards
-				.filter(function(card){
-					return card.type === "bad";
-				})
-				.map(function(card) {
-					return card.id;
-				});
+		getBadCards: function(boardId) {
+			var board = dataRepository.getBoardById(boardId);
+			return !board ? [] :
+				board.cards
+					.filter(function(card){
+						return card.type === "bad";
+					});
 		},
 
-		getConfusingCardIds: function(boardId) {
-			return boardRepository.getBoardById(boardId).cards
-				.filter(function(card){
-					return card.type === "confusing";
-				})
-				.map(function(card) {
-					return card.id;
-				});
+		getConfusingCards: function(boardId) {
+			var board = dataRepository.getBoardById(boardId);
+			return !board ? [] :
+				board.cards 
+					.filter(function(card){
+						return card.type === "confusing";
+					});
 		}
 	};
 }]);
@@ -81,10 +79,9 @@ contintroApp.service("boardService", ["$window", "boardRepository", function($wi
 contintroApp.controller("boardController", ['$scope', 'boardService', function($scope, boardService){
 	$scope.init = function(id){
 		$scope.id = id;
+		$scope.cards = boardService.getAllCards($scope.id);
+		$scope.goodCards = boardService.getGoodCards($scope.id);
+		$scope.badCards = boardService.getBadCards($scope.id);
+		$scope.confusingCards = boardService.getConfusingCards($scope.id);
 	};
-
-	$scope.cards = boardService.getAllCardIds($scope.id);
-	$scope.goodCards = boardService.getGoodCardIds($scope.id);
-	$scope.badCards = boardService.getBadCardIds($scope.id);
-	$scope.confusingCards = boardService.getConfusingCardIds($scope.id);
 }]);
