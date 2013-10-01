@@ -1,4 +1,4 @@
-contintroApp.service("dataRepository", ["serverCom", function(serverCom){
+contintroApp.service("dataRepository", ["messageService", "serverCom", function(messageService, serverCom){
 	var board = {}; 	
 
 	return {
@@ -17,7 +17,31 @@ contintroApp.service("dataRepository", ["serverCom", function(serverCom){
 			return board;
 		},
 		editCard: function(card, callback) {
-			callback();
+			serverCom.editCard(card, function(error, editedCard) {
+				if(!error){
+					board.cards.forEach(function(value, index, array) {
+						if(value.id === card.id){
+							array[index] = card;
+						}
+					});
+					messageService.publish("CARD_EDIT", {card: editedCard});
+					callback();
+				} else {
+					callback(error.message);
+				}
+			});
+		},
+		addCard: function(card, callback) {
+			serverCom.addCard(card, board.Id, function(error, cardId) {
+				if(!error){
+					messageService.publish("CARD_EDIT", {type: card.type});
+					card.id = cardId;
+					board.cards.push(card)
+					callback();
+				} else {
+					callback(error.message);
+				}
+			});
 		},
 		getCardById: function(id) {
 			return board.cards

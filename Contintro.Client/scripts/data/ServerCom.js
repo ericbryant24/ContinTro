@@ -32,6 +32,16 @@ contintroApp.factory("serverCom", function() {
 	return {
 		getBoardById: function(id, callback) {
 			callback(false, data.boards[0]);
+		},
+		editCard: function(card, callback) {
+			callback(false, {
+				id: card.id,
+				type: card.type,
+				description: card.description
+			});
+		},
+		addCard: function(card, boardId, callback) {
+			callback(false, card);
 		}
 	};
 });

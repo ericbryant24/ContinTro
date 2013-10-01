@@ -8,7 +8,6 @@ contintroApp.controller("cardController", ["$scope", "cardService", function($sc
 	$scope.saveEdits = function() {
 		cardService.editCardDescription($scope.id, $scope.editedDescription, function(error){
 			if(!error) {
-				$scope.description = $scope.editedDescription;
 				$scope.editing = false;
 			}
 			else {
