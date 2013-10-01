@@ -5,6 +5,10 @@
 	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<script type="text/javascript" src="scripts/lib/angular.min.js"></script>
 	<script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript" src="scripts/data/serverCom.js"></script>
+	<script type="text/javascript" src="scripts/data/DataRepository.js"></script>
+	<script type="text/javascript" src="scripts/services/BoardService.js"></script>
+	<script type="text/javascript" src="scripts/services/CardService.js"></script>
 	<script type="text/javascript" src="scripts/controllers/BoardController.js"></script>
 	<script type="text/javascript" src="scripts/controllers/CardController.js"></script>
 </head>
@@ -21,11 +25,21 @@
 		</ul>
 		<h3>Bad</h3>
 		<ul ng-repeat="card in badCards" ng-controller="cardController" ng-init="init(card)">
-			<li>{{description}}</li>
+			<li ng-click="edit()" ng-hide="editing">{{description}}</li>
+			<li ng-show="editing">
+				<input type="text" ng-model="editedDescription" />
+				<input type="button" ng-click="saveEdits()" value="Save" />
+				<input type="button" ng-click="cancelEdits()" value="Cancel" />
+			</li>
 		</ul>
 		<h3>Confusing</h3>
 		<ul ng-repeat="card in confusingCards" ng-controller="cardController" ng-init="init(card)">
-			<li>{{description}}</li>
+			<li ng-click="edit()" ng-hide="editing">{{description}}</li>
+			<li ng-show="editing">
+				<input type="text" ng-model="editedDescription" />
+				<input type="button" ng-click="saveEdits()" value="Save" />
+				<input type="button" ng-click="cancelEdits()" value="Cancel" />
+			</li>
 		</ul>
 	</div>
 </body>

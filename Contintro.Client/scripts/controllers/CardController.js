@@ -1,11 +1,3 @@
-contintroApp.service('cardService', ["$window", "dataRepository", function($window, dataRepository){
-	return {
-		editCardDescription: function(cardId, description, callback) {
-			dataRepository.editCardDescription(cardId, description, callback);
-		}
-	};
-}]);
-
 contintroApp.controller("cardController", ["$scope", "cardService", function($scope, cardService){
 	$scope.init = function(card) {
 		angular.extend($scope, card);
